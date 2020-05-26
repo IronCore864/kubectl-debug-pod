@@ -1,0 +1,66 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: debug
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kubectl
+  namespace: debug
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: debug
+  name: pod-operator
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "watch", "list", "delete", "update", "create"]
+- apiGroups: [""]
+  resources: ["pods/attach"]
+  verbs: ["get", "watch", "list", "delete", "update", "create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kubectl
+  namespace: debug
+subjects:
+  - kind: ServiceAccount
+    name: kubectl
+    namespace: debug
+roleRef:
+  kind: Role
+  name: pod-operator
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubectl
+  namespace: debug
+  labels:
+    app: kubectl
+spec:
+  selector:
+    matchLabels:
+      app: kubectl
+  template:
+    metadata:
+      labels:
+        app: kubectl
+    spec:
+      serviceAccountName: kubectl
+      containers:
+      - name: kubectl
+        image: ironcore864/kubectl-debug-pod:1.17.3
+        resources:
+          limits:
+            cpu: 50m
+            memory: 64Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi

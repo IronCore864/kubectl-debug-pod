@@ -1,0 +1,6 @@
+#!/bin/sh
+kubectl run -i --tty --rm debug-$(date +%s) --image=nicolaka/netshoot \
+    --env=http_proxy=$HTTP_PROXY \
+    --env=https_proxy=$HTTPS_PROXY \
+    --env=no_proxy=$NO_PROXY \
+    --restart=Never -- sh
