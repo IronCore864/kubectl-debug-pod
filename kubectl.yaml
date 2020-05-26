@@ -64,3 +64,11 @@ spec:
           requests:
             cpu: 50m
             memory: 64Mi
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
