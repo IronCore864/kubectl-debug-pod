@@ -11,20 +11,3 @@ steps:
       from_secret: docker_password
     repo: ironcore864/kubectl-debug-pod
     tags: 1.17.3
-- name: scan
-  image: guoxudongdocker/drone-trivy
-  volumes:
-  - name: trivy
-    path: /root/.cache
-  - name: docker
-    path: /var/run/docker.sock
-  commands: 
-    - trivy ironcore864/kubectl-debug-pod:1.17.3
-
-volumes:
-- name: docker
-  host:
-    path: /var/run/docker.sock
-- name: trivy
-  host:
-    path: /tmp/cache/.trivy
