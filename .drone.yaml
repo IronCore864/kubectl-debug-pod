@@ -9,5 +9,5 @@ steps:
       from_secret: docker_username
     password:
       from_secret: docker_password
-    repo: ironcore864/kubectl
-    tags: latest
+    repo: ironcore864/kubectl-debug-pod
+    tags: 1.17.3
